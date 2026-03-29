@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hack AI — Season 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Animated background -->
+  <div class="bg-grid"></div>
+  <div class="bg-glow g1"></div>
+  <div class="bg-glow g2"></div>
+  <canvas id="particles"></canvas>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">HACK<span>AI</span> <em>S2</em></div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#prizes">Prizes</a></li>
+      <li><a href="#guest">Guest</a></li>
+      <li><a href="#register" class="nav-cta">Register →</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about" onclick="toggleMenu()">About</a>
+    <a href="#schedule" onclick="toggleMenu()">Schedule</a>
+    <a href="#prizes" onclick="toggleMenu()">Prizes</a>
+    <a href="#guest" onclick="toggleMenu()">Guest</a>
+    <a href="#register" onclick="toggleMenu()">Register</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-tag">SCC × Center for Excellence & Professional Training</div>
+    <h1 class="hero-title">
+      <span class="line1">HACK</span>
+      <span class="line2">AI</span>
+      <span class="line3">SEASON <span class="num">2</span></span>
+    </h1>
+    <p class="hero-sub">Build. Innovate. Dominate. — An Agentic AI Hackathon</p>
+    <div class="hero-meta">
+      <div class="meta-chip">📅 6th & 7th April 2026</div>
+      <div class="meta-chip">📍 34 Block Lecture Theatres</div>
+      <div class="meta-chip">⏱ 24-Hour Hackathon</div>
+      <div class="meta-chip">💸 ₹49 Registration</div>
+    </div>
+    <div class="hero-btns">
+      <a href="#register" class="btn-primary">Register Now</a>
+      <a href="#about" class="btn-ghost">Learn More</a>
+    </div>
+    <div class="countdown-wrap">
+      <p class="countdown-label">Event starts in</p>
+      <div class="countdown" id="countdown">
+        <div class="cd-box"><span id="cd-days">00</span><label>Days</label></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-box"><span id="cd-hours">00</span><label>Hours</label></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-box"><span id="cd-mins">00</span><label>Mins</label></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-box"><span id="cd-secs">00</span><label>Secs</label></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section about" id="about">
+    <div class="section-label">// 001 ABOUT</div>
+    <h2 class="section-title">What is <span>Hack AI?</span></h2>
+    <div class="about-grid">
+      <div class="about-card">
+        <div class="card-icon">🤖</div>
+        <h3>Agentic AI Workshop</h3>
+        <p>A full-day hands-on workshop on Agentic AI from 9AM–5PM on Day 1. Learn, build, and ship real AI agents.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">⚡</div>
+        <h3>24-Hour Hackathon</h3>
+        <p>Starting 5PM on Day 1, teams compete in a grueling 24-hour sprint to build the most impactful AI solutions.</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">🏆</div>
+        <h3>Up to 300 Participants</h3>
+        <p>Open to ~250 workshop attendees and up to 300 hackathon participants. Limited seats — register fast!</p>
+      </div>
+      <div class="about-card">
+        <div class="card-icon">🎓</div>
+        <h3>Certification & Benefits</h3>
+        <p>All participants receive official certification, EduRev benefits, and CA benefits upon participation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHEDULE -->
+  <section class="section schedule" id="schedule">
+    <div class="section-label">// 002 SCHEDULE</div>
+    <h2 class="section-title">Event <span>Structure</span></h2>
+    <div class="timeline">
+      <div class="timeline-day">
+        <div class="day-header">
+          <span class="day-badge">DAY 1</span>
+          <span class="day-date">6th April 2026</span>
+        </div>
+        <div class="timeline-events">
+          <div class="t-event">
+            <div class="t-time">09:00 AM – 05:00 PM</div>
+            <div class="t-content">
+              <h4>Agentic AI Hands-on Workshop</h4>
+              <p>Deep dive into agentic AI frameworks, tools, and real-world applications. Hands-on sessions with industry tools.</p>
+            </div>
+            <div class="t-dot"></div>
+          </div>
+          <div class="t-event highlight">
+            <div class="t-time">05:00 PM onwards</div>
+            <div class="t-content">
+              <h4>🚀 Hackathon Begins!</h4>
+              <p>The 24-hour clock starts. Teams assemble, problem statements revealed. Let the building begin!</p>
+            </div>
+            <div class="t-dot"></div>
+          </div>
+        </div>
+      </div>
+      <div class="timeline-day">
+        <div class="day-header">
+          <span class="day-badge">DAY 2</span>
+          <span class="day-date">7th April 2026</span>
+        </div>
+        <div class="timeline-events">
+          <div class="t-event">
+            <div class="t-time">All Day</div>
+            <div class="t-content">
+              <h4>Hackathon Continuation</h4>
+              <p>Keep building! Mentors available for guidance. Push your project to the finish line.</p>
+            </div>
+            <div class="t-dot"></div>
+          </div>
+          <div class="t-event">
+            <div class="t-time">Afternoon</div>
+            <div class="t-content">
+              <h4>Final Submissions & Judging</h4>
+              <p>Lock in your code, prepare your pitch. Judges evaluate projects on innovation, impact, and execution.</p>
+            </div>
+            <div class="t-dot"></div>
+          </div>
+          <div class="t-event">
+            <div class="t-time">By 05:00 PM</div>
+            <div class="t-content">
+              <h4>🎉 Closing Ceremony</h4>
+              <p>Winners announced, prizes distributed, certificates awarded. Event concludes.</p>
+            </div>
+            <div class="t-dot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRIZES -->
+  <section class="section prizes" id="prizes">
+    <div class="section-label">// 003 PRIZES</div>
+    <h2 class="section-title">Win <span>Big</span></h2>
+    <div class="prizes-grid">
+      <div class="prize-card second">
+        <div class="prize-rank">2nd</div>
+        <div class="prize-trophy">🥈</div>
+        <div class="prize-amount">₹2,000</div>
+        <div class="prize-label">Second Prize</div>
+      </div>
+      <div class="prize-card first">
+        <div class="prize-rank">1st</div>
+        <div class="prize-crown">👑</div>
+        <div class="prize-trophy">🥇</div>
+        <div class="prize-amount">₹4,000</div>
+        <div class="prize-label">First Prize</div>
+        <div class="prize-glow"></div>
+      </div>
+      <div class="prize-card third">
+        <div class="prize-rank">3rd</div>
+        <div class="prize-trophy">🥉</div>
+        <div class="prize-amount">₹1,000</div>
+        <div class="prize-label">Third Prize</div>
+      </div>
+    </div>
+    <div class="benefits-strip">
+      <div class="benefit">✅ Official Certification</div>
+      <div class="benefit">✅ EduRev Benefits</div>
+      <div class="benefit">✅ CA Benefits</div>
+      <div class="benefit">✅ Networking Opportunities</div>
+    </div>
+  </section>
+
+  <!-- GUEST -->
+  <section class="section guest" id="guest">
+    <div class="section-label">// 004 GUEST SPEAKER</div>
+    <h2 class="section-title">Meet Our <span>Guest</span></h2>
+    <div class="guest-card">
+      <div class="guest-avatar">
+        <div class="avatar-ring"></div>
+        <div class="avatar-inner">P</div>
+      </div>
+      <div class="guest-info">
+        <h3 class="guest-name">Prashant</h3>
+        <p class="guest-role">Software Engineer</p>
+        <p class="guest-bio">An industry expert bringing real-world insights into Agentic AI and software engineering. Join us for an exclusive talk and Q&A session during the event.</p>
+        <div class="guest-tags">
+          <span>Agentic AI</span>
+          <span>Software Engineering</span>
+          <span>Industry Expert</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER -->
+  <section class="section register" id="register">
+    <div class="section-label">// 005 REGISTER</div>
+    <h2 class="section-title">Join the <span>Revolution</span></h2>
+    <p class="register-sub">Registration fee: ₹49 per student (collected at venue)</p>
+
+    <div class="form-wrap">
+      <div id="form-success" class="form-success hidden">
+        <div class="success-icon">✅</div>
+        <h3>You're registered!</h3>
+        <p>Check your email for confirmation. See you at 34 Block Lecture Theatres!</p>
+      </div>
+      <form id="regForm" class="reg-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" name="name" placeholder="Your full name" required />
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" name="email" placeholder="your@email.com" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required />
+          </div>
+          <div class="form-group">
+            <label>College / Institution *</label>
+            <input type="text" name="college" placeholder="Your college name" required />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Year of Study *</label>
+            <select name="year" required>
+              <option value="">Select year</option>
+              <option>1st Year</option>
+              <option>2nd Year</option>
+              <option>3rd Year</option>
+              <option>4th Year</option>
+              <option>Postgraduate</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Participation Type *</label>
+            <select name="type" required>
+              <option value="">Select type</option>
+              <option value="workshop">Workshop Only</option>
+              <option value="hackathon">Hackathon Only</option>
+              <option value="both">Workshop + Hackathon</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label>Team Name (if applicable)</label>
+          <input type="text" name="teamName" placeholder="Leave blank if solo" />
+        </div>
+        <div class="form-group full">
+          <label>How did you hear about us?</label>
+          <select name="source">
+            <option value="">Select</option>
+            <option>College Notice Board</option>
+            <option>Social Media</option>
+            <option>Friend / Classmate</option>
+            <option>Faculty</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-note">
+          💡 Registration fee of <strong>₹49</strong> is collected at the venue on the day of the event.
+        </div>
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span>Register Now</span>
+          <div class="btn-loader hidden" id="btnLoader">⏳</div>
+        </button>
+        <p class="form-error hidden" id="formError">Something went wrong. Please try again.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ORGANIZER -->
+  <section class="section organizer">
+    <div class="org-card">
+      <p class="org-label">Organized by</p>
+      <h3>SCC — Student Career Committee</h3>
+      <p>Center for Excellence & Professional Training</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">HACK<span>AI</span> S2</div>
+    <p>© 2026 SCC — Center for Excellence & Professional Training. All rights reserved.</p>
+    <p style="margin-top:8px;opacity:0.4;font-size:0.75rem;">34 Block Lecture Theatres | 6th–7th April 2026</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

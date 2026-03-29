@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin — Hack AI S2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #020408; --bg2: #070d14;
+      --cyan: #00f5ff; --green: #00ff88; --amber: #ffbe00; --red: #ff4757;
+      --text: #e8edf5; --muted: #6b7a8d;
+      --card: rgba(255,255,255,0.03); --border: rgba(0,245,255,0.12); --border2: rgba(255,255,255,0.06);
+      --font-head: 'Orbitron', monospace; --font-body: 'Syne', sans-serif; --font-mono: 'Space Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-body); min-height: 100vh; }
+
+    /* LOGIN */
+    #loginScreen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-box {
+      background: var(--card); border: 1px solid var(--border2);
+      border-radius: 16px; padding: 3rem; width: 100%; max-width: 400px; text-align: center;
+    }
+    .login-box h2 { font-family: var(--font-head); font-size: 1.2rem; letter-spacing: 3px; color: var(--cyan); margin-bottom: 0.5rem; }
+    .login-box p { color: var(--muted); font-family: var(--font-mono); font-size: 0.75rem; margin-bottom: 2rem; }
+    .login-box input {
+      width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 0.85rem 1rem; color: var(--text);
+      font-family: var(--font-mono); font-size: 0.9rem; outline: none; margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+    .login-box input:focus { border-color: var(--cyan); }
+    .login-box button {
+      width: 100%; background: linear-gradient(135deg, var(--cyan), var(--green));
+      color: #020408; border: none; border-radius: 8px; padding: 0.9rem;
+      font-family: var(--font-head); font-size: 0.85rem; letter-spacing: 2px; cursor: pointer;
+    }
+    .login-err { color: var(--red); font-family: var(--font-mono); font-size: 0.75rem; margin-top: 0.75rem; }
+
+    /* ADMIN LAYOUT */
+    #adminPanel { display: none; }
+    .admin-nav {
+      background: rgba(2,4,8,0.95); border-bottom: 1px solid var(--border2);
+      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .admin-logo { font-family: var(--font-head); font-size: 1rem; letter-spacing: 2px; }
+    .admin-logo span { color: var(--cyan); }
+    .logout-btn {
+      background: none; border: 1px solid var(--border2); color: var(--muted);
+      padding: 0.4rem 1rem; border-radius: 6px; cursor: pointer;
+      font-family: var(--font-mono); font-size: 0.75rem; transition: all 0.2s;
+    }
+    .logout-btn:hover { border-color: var(--red); color: var(--red); }
+
+    .admin-body { padding: 2rem; max-width: 1400px; margin: 0 auto; }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--card); border: 1px solid var(--border2);
+      border-radius: 12px; padding: 1.5rem;
+    }
+    .stat-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-value { font-family: var(--font-head); font-size: 2rem; font-weight: 900; }
+    .stat-card.total .stat-value { color: var(--cyan); }
+    .stat-card.workshop .stat-value { color: var(--green); }
+    .stat-card.hackathon .stat-value { color: var(--amber); }
+    .stat-card.both .stat-value { color: var(--red); }
+
+    /* TABLE */
+    .table-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .table-header h3 { font-family: var(--font-head); font-size: 1rem; letter-spacing: 2px; color: var(--cyan); }
+    .table-controls { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .search-input {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 0.6rem 1rem; color: var(--text);
+      font-family: var(--font-mono); font-size: 0.8rem; outline: none; width: 220px;
+      transition: border-color 0.2s;
+    }
+    .search-input:focus { border-color: var(--cyan); }
+    .filter-select {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 0.6rem 1rem; color: var(--text);
+      font-family: var(--font-mono); font-size: 0.8rem; outline: none; cursor: pointer;
+    }
+    .filter-select option { background: #0a1520; }
+    .export-btn {
+      background: rgba(0,245,255,0.08); border: 1px solid var(--border);
+      color: var(--cyan); border-radius: 8px; padding: 0.6rem 1.2rem;
+      font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 1px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .export-btn:hover { background: var(--cyan); color: var(--bg); }
+
+    .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border2); }
+    table { width: 100%; border-collapse: collapse; }
+    thead { background: rgba(0,245,255,0.04); }
+    th {
+      padding: 1rem; text-align: left;
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 2px;
+      color: var(--muted); text-transform: uppercase; white-space: nowrap;
+      border-bottom: 1px solid var(--border2);
+    }
+    td {
+      padding: 0.9rem 1rem; border-bottom: 1px solid var(--border2);
+      font-size: 0.85rem; color: var(--text);
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(0,245,255,0.02); }
+    .badge {
+      font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 1px;
+      padding: 0.25rem 0.6rem; border-radius: 100px;
+    }
+    .badge.workshop { background: rgba(0,255,136,0.1); color: var(--green); border: 1px solid rgba(0,255,136,0.2); }
+    .badge.hackathon { background: rgba(255,190,0,0.1); color: var(--amber); border: 1px solid rgba(255,190,0,0.2); }
+    .badge.both { background: rgba(255,71,87,0.1); color: var(--red); border: 1px solid rgba(255,71,87,0.2); }
+    .del-btn {
+      background: none; border: 1px solid rgba(255,71,87,0.3); color: var(--red);
+      border-radius: 6px; padding: 0.3rem 0.7rem; cursor: pointer;
+      font-family: var(--font-mono); font-size: 0.7rem; transition: all 0.2s;
+    }
+    .del-btn:hover { background: var(--red); color: #fff; }
+    .no-data { text-align: center; padding: 3rem; color: var(--muted); font-family: var(--font-mono); font-size: 0.85rem; }
+    .loading { text-align: center; padding: 3rem; color: var(--cyan); font-family: var(--font-mono); font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h2>ADMIN ACCESS</h2>
+    <p>Hack AI Season 2 — Dashboard</p>
+    <input type="text" id="adminUser" placeholder="Username" />
+    <input type="password" id="adminPass" placeholder="Password" />
+    <button onclick="doLogin()">Login →</button>
+    <p class="login-err hidden" id="loginErr">Invalid credentials</p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanel">
+  <nav class="admin-nav">
+    <div class="admin-logo">HACK<span>AI</span> — ADMIN</div>
+    <button class="logout-btn" onclick="doLogout()">Logout</button>
+  </nav>
+  <div class="admin-body">
+    <div class="stats-grid">
+      <div class="stat-card total"><div class="stat-label">Total Registrations</div><div class="stat-value" id="statTotal">—</div></div>
+      <div class="stat-card workshop"><div class="stat-label">Workshop Only</div><div class="stat-value" id="statWorkshop">—</div></div>
+      <div class="stat-card hackathon"><div class="stat-label">Hackathon Only</div><div class="stat-value" id="statHackathon">—</div></div>
+      <div class="stat-card both"><div class="stat-label">Workshop + Hackathon</div><div class="stat-value" id="statBoth">—</div></div>
+    </div>
+
+    <div class="table-header">
+      <h3>REGISTRATIONS</h3>
+      <div class="table-controls">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search name / email..." oninput="filterTable()" />
+        <select class="filter-select" id="filterType" onchange="filterTable()">
+          <option value="">All Types</option>
+          <option value="workshop">Workshop</option>
+          <option value="hackathon">Hackathon</option>
+          <option value="both">Both</option>
+        </select>
+        <button class="export-btn" onclick="exportCSV()">↓ Export CSV</button>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>College</th>
+            <th>Year</th>
+            <th>Type</th>
+            <th>Team</th>
+            <th>Registered</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="regTable">
+          <tr><td colspan="10" class="loading">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+let token = '';
+let allData = [];
+
+function doLogin() {
+  const u = document.getElementById('adminUser').value;
+  const p = document.getElementById('adminPass').value;
+  fetch('/api/admin/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username: u, password: p })
+  }).then(r => r.json()).then(d => {
+    if (d.token) {
+      token = d.token;
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('adminPanel').style.display = 'block';
+      loadData();
+    } else {
+      document.getElementById('loginErr').classList.remove('hidden');
+    }
+  }).catch(() => {
+    document.getElementById('loginErr').classList.remove('hidden');
+  });
+}
+
+function doLogout() {
+  token = ''; allData = [];
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('adminPanel').style.display = 'none';
+  document.getElementById('adminUser').value = '';
+  document.getElementById('adminPass').value = '';
+}
+
+function loadData() {
+  fetch('/api/admin/registrations', {
+    headers: { 'Authorization': 'Bearer ' + token }
+  }).then(r => r.json()).then(d => {
+    allData = d.registrations || [];
+    renderStats(allData);
+    renderTable(allData);
+  }).catch(() => {
+    document.getElementById('regTable').innerHTML = '<tr><td colspan="10" class="no-data">Failed to load data.</td></tr>';
+  });
+}
+
+function renderStats(data) {
+  document.getElementById('statTotal').textContent = data.length;
+  document.getElementById('statWorkshop').textContent = data.filter(r => r.type === 'workshop').length;
+  document.getElementById('statHackathon').textContent = data.filter(r => r.type === 'hackathon').length;
+  document.getElementById('statBoth').textContent = data.filter(r => r.type === 'both').length;
+}
+
+function renderTable(data) {
+  const tbody = document.getElementById('regTable');
+  if (!data.length) {
+    tbody.innerHTML = '<tr><td colspan="10" class="no-data">No registrations found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = data.map((r, i) => `
+    <tr>
+      <td style="color:var(--muted);font-family:var(--font-mono);font-size:0.75rem;">${i+1}</td>
+      <td><strong>${esc(r.name)}</strong></td>
+      <td style="font-family:var(--font-mono);font-size:0.8rem;">${esc(r.email)}</td>
+      <td style="font-family:var(--font-mono);font-size:0.8rem;">${esc(r.phone)}</td>
+      <td>${esc(r.college)}</td>
+      <td style="font-family:var(--font-mono);font-size:0.8rem;">${esc(r.year)}</td>
+      <td><span class="badge ${r.type}">${r.type}</span></td>
+      <td style="color:var(--muted)">${esc(r.teamName || '—')}</td>
+      <td style="font-family:var(--font-mono);font-size:0.75rem;color:var(--muted)">${new Date(r.createdAt).toLocaleDateString('en-IN')}</td>
+      <td><button class="del-btn" onclick="deleteReg('${r._id}')">Delete</button></td>
+    </tr>
+  `).join('');
+}
+
+function filterTable() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const type = document.getElementById('filterType').value;
+  const filtered = allData.filter(r => {
+    const matchQ = !q || r.name.toLowerCase().includes(q) || r.email.toLowerCase().includes(q);
+    const matchT = !type || r.type === type;
+    return matchQ && matchT;
+  });
+  renderTable(filtered);
+}
+
+function deleteReg(id) {
+  if (!confirm('Delete this registration?')) return;
+  fetch('/api/admin/registrations/' + id, {
+    method: 'DELETE',
+    headers: { 'Authorization': 'Bearer ' + token }
+  }).then(r => r.json()).then(() => loadData());
+}
+
+function exportCSV() {
+  const headers = ['Name','Email','Phone','College','Year','Type','Team','Source','Registered'];
+  const rows = allData.map(r => [
+    r.name, r.email, r.phone, r.college, r.year, r.type, r.teamName||'', r.source||'', new Date(r.createdAt).toLocaleDateString()
+  ]);
+  const csv = [headers, ...rows].map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = 'hackai_registrations.csv';
+  a.click();
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>
